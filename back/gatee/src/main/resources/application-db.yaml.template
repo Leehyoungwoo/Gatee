@@ -19,10 +19,10 @@ spring:
   jpa:
     show-sql: true
   datasource:
-      driver-class-name: com.mysql.cj.jdbc.Driver
-      url: ${DATABASE_URL}
-      username: ${DATABASE_USERNAME}
-      password: ${DATABASE_PASSWORD}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: ${DATABASE_URL}
+    username: ${DATABASE_USERNAME}
+    password: ${DATABASE_PASSWORD}
   data:
     redis:
       host: ${REDIS_HOST}

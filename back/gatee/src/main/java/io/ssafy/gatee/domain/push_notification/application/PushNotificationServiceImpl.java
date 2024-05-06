@@ -7,7 +7,6 @@ import io.ssafy.gatee.domain.chatgpt.service.GptService;
 import io.ssafy.gatee.domain.member.dao.MemberRepository;
 import io.ssafy.gatee.domain.member.entity.Member;
 import io.ssafy.gatee.domain.member_notification.dao.MemberNotificationRepository;
-import io.ssafy.gatee.domain.push_notification.dao.PushNotificationRepository;
 import io.ssafy.gatee.domain.push_notification.dto.request.DataFCMReq;
 import io.ssafy.gatee.domain.push_notification.dto.request.NaggingReq;
 import io.ssafy.gatee.domain.push_notification.dto.request.PushNotificationFCMReq;
@@ -30,7 +29,6 @@ public class PushNotificationServiceImpl implements PushNotificationService {
 
     private final FirebaseInit firebaseInit;
     private final GptService gptService;
-    private final PushNotificationRepository pushNotificationRepository;
     private final MemberRepository memberRepository;
     private final MemberNotificationRepository memberNotificationRepository;
 
@@ -201,7 +199,7 @@ public class PushNotificationServiceImpl implements PushNotificationService {
         }
         // 저장 로직 success와 fail모두
         List<PushNotification> notificationList = new ArrayList<>();
-        pushNotificationRepository.saveAll(notificationList);
+//        pushNotificationRepository.saveAll(notificationList);
         log.info(response.getFailureCount() + " messages were not sent");
         log.info(response.getSuccessCount() + " messages were sent successfully");
     }

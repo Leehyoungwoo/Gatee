@@ -1,16 +1,21 @@
 package io.ssafy.gatee.domain.push_notification.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-import org.springframework.data.mongodb.core.mapping.Document;
+import lombok.NoArgsConstructor;
+import org.hibernate.annotations.SQLRestriction;
 
 import java.util.List;
 import java.util.UUID;
 
+@Entity
 @Getter
 @Builder
-@Document(collection = "notification")
+@NoArgsConstructor
+@AllArgsConstructor
+@SQLRestriction("status=TRUE")
 public class PushNotification {
 
     @Id
@@ -24,6 +29,7 @@ public class PushNotification {
 
     private UUID senderId;
 
+    @ElementCollection(fetch = FetchType.LAZY)
     private List<UUID> receiverId;
 
     private String title;

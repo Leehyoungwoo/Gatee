@@ -118,10 +118,10 @@ public class PushNotificationServiceImpl implements PushNotificationService {
     @Override
     public void sendPushOneToOne(PushNotificationFCMReq pushNotificationFCMReq) throws FirebaseMessagingException {
         // receiver의 권한 여부 확인 - 권한이 없으면 token도 없다
-        String receiverToken = findTokenByMemberId(pushNotificationFCMReq.receiverId().getFirst());
+        String receiverToken = findTokenByMemberId(pushNotificationFCMReq.receiverId().get(0));
 
         // type별 권한 확인
-        boolean isAgreed = checkAgreement(pushNotificationFCMReq.dataFCMReq().type(), pushNotificationFCMReq.receiverId().getFirst());
+        boolean isAgreed = checkAgreement(pushNotificationFCMReq.dataFCMReq().type(), pushNotificationFCMReq.receiverId().get(0));
 
         // fcm 요청
         if (Objects.nonNull(receiverToken) && isAgreed) {

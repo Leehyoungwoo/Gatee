@@ -1,9 +1,6 @@
 import React from 'react';
 import { Schedule } from '../../../types';
 
-interface DayScheduleCardProps {
-  schedule: Schedule;
-}
 
 export enum ScheduleType {
   GROUP = 'group',
@@ -11,7 +8,7 @@ export enum ScheduleType {
   EVENT = 'event'
 }
 
-const GroupSchedule: React.FC<DayScheduleCardProps> = ({ schedule }) => {
+const GroupSchedule = ({ schedule }: { schedule: Schedule }) => {
   return (
     <div className="day-toast__schedule-list-group">
       { schedule.title }
@@ -19,7 +16,7 @@ const GroupSchedule: React.FC<DayScheduleCardProps> = ({ schedule }) => {
   );
 };
 
-const PersonalSchedule: React.FC<DayScheduleCardProps> = ({ schedule }) => {
+const PersonalSchedule = ({ schedule }: { schedule: Schedule }) => {
   return (
     <div className="day-toast__schedule-list-personal">
       { schedule.title }
@@ -27,7 +24,7 @@ const PersonalSchedule: React.FC<DayScheduleCardProps> = ({ schedule }) => {
   );
 };
 
-const Event: React.FC<DayScheduleCardProps> = ({ schedule }) => {
+const Event = ({ schedule }: { schedule: Schedule }) => {
   return (
     <div className="day-toast__schedule-list-event">
       { schedule.title }
@@ -35,7 +32,7 @@ const Event: React.FC<DayScheduleCardProps> = ({ schedule }) => {
   );
 };
 
-const EventComponent: React.FC<DayScheduleCardProps> = ({ schedule }) => {
+const EventComponent = ({ schedule }: { schedule: Schedule }) => {
   switch (schedule.category) {
     case ScheduleType.GROUP:
       return <GroupSchedule schedule={schedule} />;

@@ -12,27 +12,32 @@
 }
 
 :root {
-  font-size: $font-size;
-  font-family: $pretendard;
+  font: {
+    size: $font-size;
+    family: $pretendard;
+  }
+
 }
 
 body {
   background-color: $bg-color;
 
   #root {
+    position: fixed;
     height: 100svh;
     width: 100svw;
   }
 
+
   // topBar, bottomBar 제외한 나머지 영역 차지
-  #main-container {
+  #main {
     height: $container-height;
     overflow-x: hidden;
     overflow-y: auto;
   }
 
   // 전체 영역 차지
-  #sub-container {
+  #sub {
     height: 100svh;
   }
 }

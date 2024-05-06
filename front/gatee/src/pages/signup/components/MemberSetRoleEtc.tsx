@@ -1,8 +1,8 @@
 import React, { useRef } from 'react';
 
 const SignupMemberSetRoleEtc = (props: {
-  gender: string
-  inputRole: string
+  gender: string;
+  inputRole: string;
   setInputRole: (inputRole: string) => void;
 }) => {
   const inputRef = useRef(null);

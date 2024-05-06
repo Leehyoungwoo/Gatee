@@ -1,5 +1,5 @@
-@use '../abstracts/index' as *;
-@use '../base/index' as *;
+@use '../abstracts' as *;
+@use '../base' as *;
 @use '../components' as *;
 
 .main-container {
@@ -101,7 +101,6 @@
     .main-profile-list-item--container {
       @include flex_center;
 
-      position: relative;
       flex-direction: column;
       gap: 0.2rem;
       width: 20dvw;
@@ -112,19 +111,26 @@
       font-weight: bold;
       color: $gray200;
 
+      .main-profile-wrapper {
+        @include flex_center;
+
+        width: 15dvw;
+        height: 13dvw;
+        position: relative;
+      }
+
       .main-profile-img {
         width: 13dvw;
         height: 13dvw;
         object-fit: cover;
         border-radius: 10rem;
-        //border: 2px solid $orange400;
         box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);
       }
 
       .main-profile-mood {
         position: absolute;
-        bottom: 0.3rem;
-        right: 0.3rem;
+        bottom: 0;
+        right: 0;
       }
     }
   }

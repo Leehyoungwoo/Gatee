@@ -1,28 +1,29 @@
 import React, { useRef, useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+
 import { DateSelectArg, DayCellContentArg } from '@fullcalendar/core'
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin, { DateClickArg } from "@fullcalendar/interaction";
 import googleCalendarPlugin from "@fullcalendar/google-calendar";
-import { FaCaretLeft, FaCaretRight } from "react-icons/fa";
-import { useNavigate } from "react-router-dom";
-import { FaPlus } from "react-icons/fa6";
-import DayToast from "@pages/schedule/components/DayToast";
-import dayjs, { Dayjs } from 'dayjs';
-import useHoliday from "../../hooks/useHoliday"
+import dayjs from 'dayjs';
 
-const ScheduleIndex: React.FC = () => {
-  const today: Dayjs = dayjs();
+import DayToast from "@pages/schedule/components/DayToast";
+import { FaCaretLeft, FaCaretRight } from "react-icons/fa";
+import { FaPlus } from "react-icons/fa6";
+
+
+const ScheduleIndex = () => {
   const navigate = useNavigate();
   const calendarRef: any = useRef(null)
   const [currentDate, setCurrentDate] = useState<Date>(new Date());
   const [selectedDate, setSelectedDate] = useState<string>("");
   const [isOpenDayToast, setIsOpenDayToast] = useState<boolean>(false);
-  const [selectedStartDate, setSelectedStartDate] = useState<string>(today.format("YYYY-MM-DD"));
-  const [selectedEndDate, setSelectedEndDate] = useState<string>(today.format("YYYY-MM-DD"));
-  const googleCalendarApiKey: string | undefined = process.env.REACT_APP_GOOGLE_API_KEY;
-  const googleCalendarId: string | undefined = process.env.REACT_APP_GOOGLE_CALENDAR_ID;
-  // const holidays = useHoliday("2024");
+  const [selectedStartDate, setSelectedStartDate] = useState<string>(dayjs().format("YYYY-MM-DD"));
+  const [selectedEndDate, setSelectedEndDate] = useState<string>(dayjs().format("YYYY-MM-DD"));
+  const REACT_APP_GOOGLE_API_KEY: string | undefined = process.env.REACT_APP_GOOGLE_API_KEY;
+  const REACT_APP_GOOGLE_CALENDAR_ID: string | undefined = process.env.REACT_APP_GOOGLE_CALENDAR_ID;
+
 
   useEffect(() => {
     if (calendarRef.current) {
@@ -158,7 +159,7 @@ const ScheduleIndex: React.FC = () => {
           <FullCalendar
             ref={calendarRef}
             plugins={[dayGridPlugin, interactionPlugin, googleCalendarPlugin]}
-            googleCalendarApiKey={googleCalendarApiKey}    // 구글 캘린더 API
+            googleCalendarApiKey={REACT_APP_GOOGLE_API_KEY}    // 구글 캘린더 API
             headerToolbar={{left: "", center: "", right: ""}}
             initialView={"dayGridMonth"}
             height={"98%"}               // calendar 높이
@@ -174,7 +175,7 @@ const ScheduleIndex: React.FC = () => {
             // event
             eventSources={[
               {
-                googleCalendarId: googleCalendarId,
+                googleCalendarId: REACT_APP_GOOGLE_CALENDAR_ID,
                 className: 'schedule-calendar__holiday',
                 color: "#ed6363",
                 textColor: "#FFF",

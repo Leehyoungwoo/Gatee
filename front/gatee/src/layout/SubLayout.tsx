@@ -24,7 +24,7 @@ const SubLayout = () => {
             )}
           </Helmet>
         </HelmetProvider>
-      <div id="sub-container">
+      <div id="sub">
         <Outlet />
       </div>
     </>

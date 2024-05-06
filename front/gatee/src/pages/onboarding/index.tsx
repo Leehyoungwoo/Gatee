@@ -30,9 +30,9 @@ const OnboardingIndex = () => {
     const isDeviceIOS = /iPad|iPhone|iPod/.test(window.navigator.userAgent);
 
     if (isDeviceIOS) {
-      alert("가티 서비스는 앱에서 원활한 서비스가 가능합니다. 공유버튼을 눌러, 홈화면에 추가를 눌러주세요.")
+      console.log("IOS")
     } else {
-      alert("갤럭시 최고")
+      console.log("Not an iOS")
     }
   }, []);
 

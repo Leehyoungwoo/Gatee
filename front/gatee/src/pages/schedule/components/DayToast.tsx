@@ -10,7 +10,7 @@ interface DayToastProps {
   onCloseClick: () => void;
 }
 
-const DayToast: React.FC<DayToastProps> = ({date, onCloseClick}) => {
+const DayToast = ({date, onCloseClick}: DayToastProps) => {
   const dateTitle = dayjs(date).format("M월 D일");
 
   return (

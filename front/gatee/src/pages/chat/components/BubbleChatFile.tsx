@@ -1,7 +1,7 @@
 import React from 'react';
-import { ChatItem, ChatFile } from "@type/index";
+import { ChatMessage, ChatFile } from "@type/index";
 
-const BubbleChatFile: React.FC<{ chat: ChatItem }> = ({chat}) => {
+const BubbleChatFile = ({chat}: { chat: ChatMessage }) => {
   return (
     <div className={`bubble-file${chat.files && chat.files.length >= 2 ? '--multiple' : '--single'}`}>
       {chat.files && chat.files.map((file: ChatFile, index: number) =>

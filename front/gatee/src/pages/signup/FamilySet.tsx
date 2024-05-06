@@ -8,7 +8,7 @@ const SignupFamilySet = () => {
   const navigate = useNavigate();
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const [inputValue, setInputValue] = useState("");
+  const [inputValue, setInputValue] = useState<string>("");
   const [selectedFamilyImage, setSelectedFamilyImage] = useState<string | ArrayBuffer | null>(null);
 
   // 입력값

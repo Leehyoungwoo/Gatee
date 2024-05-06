@@ -1,4 +1,12 @@
-import { Member, Question, Character, Schedule, Chat } from "src/types";
+import { Member, Question, Character, Schedule, Chat, EmojiCategory } from "src/types";
+import EmojiDogOne from "@assets/images/emoji/emoji_dog1.png";
+import EmojiDogTwo from "@assets/images/emoji/emoji_dog2.png";
+import EmojiDogThree from "@assets/images/emoji/emoji_dog3.png";
+import EmojiDogFour from "@assets/images/emoji/emoji_dog4.png";
+import EmojiJulOne from "@assets/images/emoji/emoji_jul1.png";
+import EmojiJulTwo from "@assets/images/emoji/emoji_jul2.png";
+import EmojiJulThree from "@assets/images/emoji/emoji_jul3.png";
+import EmojiJulFour from "@assets/images/emoji/emoji_jul4.png";
 
 // 멤버 임시 데이터
 export const MemberInfoSample: Member = {
@@ -322,3 +330,25 @@ export const ChatSample: Chat = {
   ],
   cursor: 1
 }
+
+// 이모티콘
+export const Emoji: EmojiCategory[] = [
+  {
+    name: "깡지",
+    item: [
+      { id: "dog1", image: EmojiDogOne },
+      { id: "dog2", image: EmojiDogTwo },
+      { id: "dog3", image: EmojiDogThree },
+      { id: "dog4", image: EmojiDogFour },
+    ]
+  },
+  {
+    name: "주르미",
+    item: [
+      { id: "jul1", image: EmojiJulOne },
+      { id: "jul2", image: EmojiJulTwo },
+      { id: "jul3", image: EmojiJulThree },
+      { id: "jul4", image: EmojiJulFour },
+    ]
+  }
+];

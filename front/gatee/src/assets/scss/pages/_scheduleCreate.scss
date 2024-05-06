@@ -112,6 +112,13 @@
       grid-template-columns: repeat(4, 1fr);
       gap: 1rem;
 
+      &-item {
+        @include flex-col;
+
+        align-items: center;
+        gap: 0.3rem;
+      }
+
       &-image {
         @extend %circular-profile-image;
 

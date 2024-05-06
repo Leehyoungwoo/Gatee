@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 const SignupFamilyJoin = () => {
   const inputRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
-  const [inputCode, setInputCode] = useState("");
+  const [inputCode, setInputCode] = useState<string>("");
 
   // 입력값
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>): void => {

@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {useNavigate} from "react-router-dom";
 import Checkbox from '@mui/material/Checkbox';
-import {PhotoListProps, PhotoData} from "../types/index";
+import {PhotoListProps, PhotoData} from "@type/index";
 
 
 // 채팅 앨범과 모든 사진의 일별 사진, 월별 연별 앨범 사진 상세페이지에서 활용됨
@@ -14,10 +14,8 @@ const PhotoList = ({editMode, photoGroup, handleChecked}: PhotoListProps) => {
         return <PhotoItem key={index} photoData={item} editMode={editMode} photoGroup={photoGroup}
                           handleChecked={handleChecked}/>
       })}
-
     </div>
   )
-
 }
 
 const PhotoItem = ({ photoData, editMode, handleChecked }: PhotoListProps & { photoData: PhotoData }) => {
@@ -36,15 +34,17 @@ const PhotoItem = ({ photoData, editMode, handleChecked }: PhotoListProps & { ph
 
   // 체크박스 변동 함수
   const handleCheckBox = () => {
-    // 체크박스가 체크 되어있다면 리스트에서 id를 제거하고 체크를 푼다
-    if (checked) {
-      handleChecked(photoData.id,"delete")
-      setChecked(false)
-    }
-    // 체크박스가 체크 되어있지 않다면, 리스트에 id를 추가하고 체크를 한다
-    else {
-      handleChecked(photoData.id,"add")
-      setChecked(true)
+    if (handleChecked) {
+      // 체크박스가 체크 되어있다면 리스트에서 id를 제거하고 체크를 푼다
+      if (checked) {
+        handleChecked(photoData.id,"delete")
+        setChecked(false)
+      }
+      // 체크박스가 체크 되어있지 않다면, 리스트에 id를 추가하고 체크를 한다
+      else {
+        handleChecked(photoData.id,"add")
+        setChecked(true)
+      }
     }
   }
 

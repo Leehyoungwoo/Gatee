@@ -4,13 +4,18 @@
 $chat-input-height: 3rem;
 
 .chat {
-  display: flex;
-  flex-direction: column-reverse;
+  @include flex-col;
+
   height: 100%;
-  overflow-y: auto;
-  padding-bottom: calc($chat-input-height + 0.5rem);
-  padding-left: 2%;
-  padding-right: 2%;
+
+  &__main {
+    @include px-(0.5);
+
+    flex: 1;
+    display: flex;
+    flex-direction: column-reverse;
+    overflow-y: auto;
+  }
 
   &__date {
     @include flex-center;
@@ -42,7 +47,6 @@ $chat-input-height: 3rem;
 
       width: 2.5rem;
       height: 2.5rem;
-      box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);
     }
 
     &__container {
@@ -193,6 +197,17 @@ $chat-input-height: 3rem;
       height: 1.7rem;
       font-size: $font-size-small;
     }
+
+    &-status {
+      @include flex_center;
+      @include my-(0.5);
+
+      font: {
+        size: $font-size-big;
+        weight: 600;
+      }
+      color: $orange500;
+    }
   }
 
   &__button {
@@ -223,14 +238,20 @@ $chat-input-height: 3rem;
 }
 
 .chat-input {
-  @include flex-center;
+  @include flex-col;
   @include py-(0.1);
 
+  justify-content: center;
   background-color: white;
-  position: absolute;
-  width: 96%;
-  min-height: $chat-input-height;
-  bottom: $bottomBar-height;
+  width: 100%;
+
+  &__main {
+    @include flex-center;
+    @include m-(0.3);
+
+    position: relative;
+    min-height: $chat-input-height;
+  }
 
   &__field {
     @include flex-row;
@@ -238,8 +259,7 @@ $chat-input-height: 3rem;
 
     align-items: center;
     background-color: $gray75;
-    width: 98%;
-    height: 90%;
+    width: 100%;
     border-radius: 20px;
   }
 
@@ -262,14 +282,57 @@ $chat-input-height: 3rem;
       @extend .chat-input__button;
       @include mr-(0.2);
 
-      color: $gray150;
+      color: $subtext-color;
+      transition: transform 0.3s;
+      z-index: 10;
 
-      &:focus,
-      &:active {
-        color: $gray200;
+      &--active {
+        @extend .chat-input__button-plus;
+        transform: rotate(-45deg);
       }
     }
 
+    &-wrapper {
+      @include flex-col;
+
+      gap: 0.3rem;
+      position: relative;
+      z-index: 10;
+
+      &--disabled {
+        display: none;
+      }
+    }
+
+    &-appointment,
+    &-camera {
+      @extend .chat-input__button;
+      position: absolute;
+      bottom: 0;
+      transition: all 0.3s ease;
+    }
+
+    &-appointment--active {
+      @extend .chat-input__button-appointment;
+      background-color: #ff9595;
+      bottom: 4.7rem;
+
+      &:focus,
+      &:active {
+        background-color: #f88282;
+      }
+    }
+
+    &-camera--active {
+      @extend .chat-input__button-camera;
+      background-color: #C1C4FF;
+      bottom: 2.2rem;
+
+      &:focus,
+      &:active {
+        background-color: #afb2fb;
+      }
+    }
     &-send {
       @extend .chat-input__button;
 
@@ -279,18 +342,169 @@ $chat-input-height: 3rem;
       &:active {
         background-color: $orange500;
       }
+
+      &--appointment {
+        @extend .chat-input__button;
+
+        background-color: #ff9595;
+
+        &:focus,
+        &:active {
+          background-color: #f88282;
+        }
+      }
     }
 
     &-emoji {
       @include flex_center;
 
+      position: relative;
       margin-right: 7px;
-      color: $gray150;
+      color: $subtext-color;
 
-      &:focus,
-      &:active {
-        color: $gray200;
+      &--active {
+        @extend .chat-input__button-emoji;
+
+        color: $orange400;
       }
     }
+
+    &-cancel {
+      @include flex-center;
+
+      margin-right: 4.5px;
+      color: $subtext-color;
+    }
+  }
+
+  &__preview {
+    @include flex-row;
+
+    position: absolute;
+    bottom: $chat-input-height;
+    width: 100dvw;
+    height: 35dvw;
+    background-color: rgba(0, 0, 0, 0.5);
+
+    &__container {
+      width: 100dvw;
+      height: 100%;
+    }
+
+    &__file-list {
+      @include flex-row;
+
+      align-items: center;
+      width: 100dvw;
+      height: 100%;
+      overflow-x: auto;
+      gap: 1dvw;
+      padding: 0 1dvw;
+    }
+
+    &__file-item {
+      @include flex_center;
+
+      position: relative;
+      width: 32dvw;
+      height: 32dvw;
+      border-radius: 10px;
+
+      img {
+        width: 32dvw;
+        height: 100%;
+        object-fit: cover;
+        border-radius: inherit;
+      }
+    }
+
+    &__emoji {
+      @include flex_center;
+
+      width: 100dvw;
+      height: 100%;
+
+      img {
+        width: 37dvw;
+        height: auto;
+      }
+    }
+
+    &__button {
+      position: absolute;
+      color: white;
+      top: 3px;
+      right: 3px;
+    }
+  }
+
+  &__emoji {
+    @include flex-col;
+    @include px-(0.5);
+
+    height: calc(25dvw + 2rem);
+    width: 100dvw;
+
+    &-tabs {
+      @include flex-row;
+      @include my-(0.5);
+
+      gap: 0.3rem;
+    }
+
+    &-tab {
+      background-color: $gray50;
+      padding: 3px 10px;
+      border-radius: 30px;
+      font: {
+        size: $font-size-small;
+        weight: 500;
+      }
+      transition: all 0.3s ease;
+      color: $subtext-color;
+
+      &--active {
+        @extend .chat-input__emoji-tab;
+
+        background-color: $gray100;
+        color: black;
+      }
+    }
+
+    &-items {
+      display: none;
+
+      &--active {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        width: 100%;
+        gap: 0.5rem;
+        justify-content: center;
+        align-content: center;
+      }
+    }
+
+    &-item {
+      width: 21dvw;
+      height: 21dvw;
+
+      img {
+        width: 100%;
+        height: 100%;
+      }
+    }
+  }
+}
+
+.chat-photo {
+  &__title {
+    @include mb-(0.5);
+
+    font: {
+      size: $font-size-big;
+      weight: 600;
+    }
+    //color: $orange500;
+    text-align: center;
   }
 }

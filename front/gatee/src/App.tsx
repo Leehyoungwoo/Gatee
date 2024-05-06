@@ -9,9 +9,7 @@ const App = ()=> {
   // localStorage.removeItem("modal")
 
   return (
-    <div>
-      <Router/>
-    </div>
+    <Router/>
   );
 }
 

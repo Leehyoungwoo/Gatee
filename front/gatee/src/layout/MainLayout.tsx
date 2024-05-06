@@ -30,7 +30,7 @@ const MainLayout = () => {
       }
 
       <TopBar></TopBar>
-      <div id="main-container">
+      <div id="main">
         <Outlet />
       </div>
       <BottomBar></BottomBar>

@@ -1,6 +1,6 @@
 import React, { useState} from 'react';
-import samplIcon1 from "@assets/images/signup/dad.svg";
-import samplIcon2 from "@assets/images/signup/daughter.svg";
+import sampleIcon1 from "@assets/images/signup/dad.svg";
+import sampleIcon2 from "@assets/images/signup/daughter.svg";
 import { IoHeart } from "react-icons/io5";
 import { IoHeartOutline } from "react-icons/io5";
 import { MdOutlineFileDownload } from "react-icons/md";
@@ -12,15 +12,14 @@ interface PhotoDetailData {
 
 const PhotoItem = ({ photoDetailData }: { photoDetailData: PhotoDetailData }) => {
   const [isPressed, setIsPressed] = useState(false);
-  console.log(photoDetailData)
   const profileData = [
     {
       nickname: "아빠",
-      icon: samplIcon1
+      icon: sampleIcon1
     },
     {
       nickname: "언니",
-      icon: samplIcon2
+      icon: sampleIcon2
     },
   ];
 
@@ -50,21 +49,14 @@ const PhotoItem = ({ photoDetailData }: { photoDetailData: PhotoDetailData }) =>
       })
       .catch(error => console.error("Error downloading photo:", error));
   };
-  
+
 
 
   return (
     <div className="photo-detail--container">
       {/* 서버 주소로 변경할 것 */}
+      <img className="photo-detail-img" src={photoDetailData.src} alt=""/>
 
-        <img className="photo-detail-img"
-             src={"https://images.pexels.com/photos/1458926/pexels-photo-1458926.jpeg?cs=srgb&dl=pexels-poodles2doodles-1458926.jpg&fm=jpg"}
-             alt="asa"/>
-      {/*<img className="photo-detail-img"*/}
-      {/*       src={photoDetailData.src}*/}
-      {/*       alt="asa"/>*/}
-
-      
       <div className="interaction--container">
         <div className="liked--container">
           {/* 좋아요 표시 */}

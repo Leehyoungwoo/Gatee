@@ -2,7 +2,6 @@ package io.ssafy.gatee.domain.member_notification.entity;
 
 import io.ssafy.gatee.domain.base.BaseEntity;
 import io.ssafy.gatee.domain.member.entity.Member;
-import io.ssafy.gatee.domain.push_notification.entity.PushNotification;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,20 +16,25 @@ import org.hibernate.annotations.SQLRestriction;
 @AllArgsConstructor
 @SQLRestriction("status=TRUE")
 public class MemberNotification extends BaseEntity {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "from_member_id")
-    private Member fromMember;
+    @JoinColumn(name = "member_id")
+    private Member member;
 
-    @ManyToOne
-    @JoinColumn(name = "to_member_id")
-    private Member toMember;
+    private boolean albumNotification;
 
-    @ManyToOne
-    @JoinColumn(name = "notification_id")
-    private PushNotification notification;
+    private boolean naggingNotification;
+
+    private boolean scheduleNotification;
+
+
+    @PrePersist
+    public void prePersist() {
+        this.albumNotification = true;
+        this.scheduleNotification = true;
+        this.naggingNotification = true;
+    }
 }

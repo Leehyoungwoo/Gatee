@@ -1,9 +1,15 @@
 package io.ssafy.gatee.domain.push_notification.dto.request;
 
-public record NaggingReq (
+import jakarta.validation.constraints.NotBlank;
+import lombok.Builder;
 
-//        String receiverId,
+import java.util.UUID;
 
+@Builder
+public record NaggingReq(
+        @NotBlank
+        UUID receiverId,
+        @NotBlank
         String message
-){
+) {
 }

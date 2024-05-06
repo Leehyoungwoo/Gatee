@@ -1,10 +1,7 @@
 package io.ssafy.gatee.domain.member.api;
 
 import io.ssafy.gatee.domain.member.application.MemberService;
-import io.ssafy.gatee.domain.member.dto.request.MemberEditMoodReq;
-import io.ssafy.gatee.domain.member.dto.request.MemberEditReq;
-import io.ssafy.gatee.domain.member.dto.request.MemberReq;
-import io.ssafy.gatee.domain.member.dto.request.MemberSaveReq;
+import io.ssafy.gatee.domain.member.dto.request.*;
 import io.ssafy.gatee.domain.member.dto.response.MemberInfoRes;
 import io.ssafy.gatee.global.security.user.CustomUserDetails;
 import jakarta.servlet.http.HttpServletResponse;
@@ -36,8 +33,15 @@ public class MemberController {
     @PatchMapping
     @ResponseStatus(HttpStatus.OK)
     public void saveInfo(HttpServletResponse response,
-            @Valid @RequestBody MemberSaveReq memberSaveReq, @AuthenticationPrincipal CustomUserDetails customUserDetails) throws ParseException {
+                         @Valid @RequestBody MemberSaveReq memberSaveReq, @AuthenticationPrincipal CustomUserDetails customUserDetails) throws ParseException {
         memberService.saveMemberInfo(memberSaveReq, customUserDetails.getMemberId(), response);
+    }
+
+    // 회원 토큰 저장 및 권한 모두 true로 변경
+    @PatchMapping("/notifications")
+    @ResponseStatus(HttpStatus.OK)
+    public void saveNotificationToken(@Valid @RequestBody MemberTokenReq memberTokenReq, @AuthenticationPrincipal CustomUserDetails customUserDetails) {
+        memberService.saveNotificationToken(memberTokenReq, customUserDetails.getMemberId());
     }
 
     // 회원 정보 수정

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
+import {requestPermission} from "../../firebase-messaging-sw";
 
 const SignupMemberSetPermission = () => {
   const navigate = useNavigate();
@@ -42,6 +43,8 @@ const SignupMemberSetPermission = () => {
   // 푸시 알림 동의 체크 버튼
   const handlePushChecked = () => {
     setPushChecked(!pushChecked);
+    // 푸시알림 권한 요청 함수
+    requestPermission()
   }
 
   // 카메라 권한 동의 체크 버튼

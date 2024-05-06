@@ -17,7 +17,6 @@ const SettingsToast = ({handleFinishTab}:HandleFinishTab) => {
   // 스위치 조절 함수
   const handleAlbumChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setAlbumAlarmChecked(event.target.checked);
-    // fcm 권한 얻기
     requestPermission()
   };
   const handleNaggingChange = (event: React.ChangeEvent<HTMLInputElement>) => {

@@ -1,5 +1,6 @@
 package io.ssafy.gatee.domain.schedule.application;
 
+import com.google.firebase.messaging.FirebaseMessagingException;
 import io.ssafy.gatee.domain.family.dao.FamilyRepository;
 import io.ssafy.gatee.domain.family.entity.Family;
 import io.ssafy.gatee.domain.family_schedule.dao.FamilyScheduleRepository;
@@ -16,6 +17,10 @@ import io.ssafy.gatee.domain.photo.dao.PhotoRepository;
 import io.ssafy.gatee.domain.photo.entity.Photo;
 import io.ssafy.gatee.domain.photo_schedule_record.dao.PhotoScheduleRecordRepository;
 import io.ssafy.gatee.domain.photo_schedule_record.entity.PhotoScheduleRecord;
+import io.ssafy.gatee.domain.push_notification.application.PushNotificationService;
+import io.ssafy.gatee.domain.push_notification.dto.request.DataFCMReq;
+import io.ssafy.gatee.domain.push_notification.dto.request.PushNotificationFCMReq;
+import io.ssafy.gatee.domain.push_notification.entity.Type;
 import io.ssafy.gatee.domain.schedule.dao.ScheduleRepository;
 import io.ssafy.gatee.domain.schedule.dto.request.ScheduleEditReq;
 import io.ssafy.gatee.domain.schedule.dto.request.ScheduleParticipateReq;
@@ -69,6 +74,8 @@ public class ScheduleServiceImpl implements ScheduleService {
 
     private final FileRepository fileRepository;
 
+    private final PushNotificationService pushNotificationService;
+
     // 전체 일정 조회
     @Override
     public ScheduleListRes readSchedule(Long familyId) throws FamilyNotFoundException {
@@ -101,7 +108,7 @@ public class ScheduleServiceImpl implements ScheduleService {
     // 일정 등록
     @Override
     @Transactional
-    public void saveSchedule(ScheduleSaveReq scheduleSaveReq, UUID memberId) throws FamilyNotFoundException {
+    public void saveSchedule(ScheduleSaveReq scheduleSaveReq, UUID memberId) throws FamilyNotFoundException, FirebaseMessagingException {
         Schedule schedule = Schedule.builder()
                 .category(Category.valueOf(scheduleSaveReq.category()))
                 .title(scheduleSaveReq.title())
@@ -131,6 +138,17 @@ public class ScheduleServiceImpl implements ScheduleService {
                 .build();
 
         memberFamilyScheduleRepository.save(memberFamilySchedule);
+
+        // 알림발송
+        pushNotificationService.sendPushOneToMany(PushNotificationFCMReq.builder()
+                                .senderId(memberId)
+                                .receiverId(memberFamilyRepository.findMyFamily(memberId))
+                                .title("일정 등록")
+                                .content(member.getName() + "님이 일정을 등록하였습니다.")
+                                .dataFCMReq(DataFCMReq.builder()
+                                    .type(Type.SCHEDULE)
+                                    .typeId(schedule.getId()).build())
+                                .build());
     }
 
     // 일정 수정

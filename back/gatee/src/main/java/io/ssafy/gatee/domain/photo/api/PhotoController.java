@@ -1,5 +1,6 @@
 package io.ssafy.gatee.domain.photo.api;
 
+import com.google.firebase.messaging.FirebaseMessagingException;
 import io.ssafy.gatee.domain.photo.application.PhotoService;
 import io.ssafy.gatee.domain.photo.dto.request.PhotoListReq;
 import io.ssafy.gatee.domain.photo.dto.request.PhotoSaveReq;
@@ -46,8 +47,8 @@ public class PhotoController {
     // 사진 등록
     @PostMapping("/save")
     @ResponseStatus(HttpStatus.OK)
-    public Long savePhoto(@Valid @RequestBody PhotoSaveReq photoSaveReq) {
-        return photoService.savePhoto(photoSaveReq);
+    public Long savePhoto(@Valid @RequestBody PhotoSaveReq photoSaveReq, @AuthenticationPrincipal CustomUserDetails customUserDetails) throws FirebaseMessagingException {
+        return photoService.savePhoto(photoSaveReq, customUserDetails.getMemberId());
     }
 
     // 사진 삭제

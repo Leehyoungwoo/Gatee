@@ -27,5 +27,5 @@ public interface PushNotificationService {
 
     void sendPushOneToOne(PushNotificationFCMReq pushNotificationFCMReq) throws FirebaseMessagingException;
 
-    void sendPushOneToMany(String senderToken, List<String> refreshTokenList, Type type, Long typeId) throws FirebaseMessagingException;
+    void sendPushOneToMany(PushNotificationFCMReq pushNotificationFCMReq) throws FirebaseMessagingException;
 }

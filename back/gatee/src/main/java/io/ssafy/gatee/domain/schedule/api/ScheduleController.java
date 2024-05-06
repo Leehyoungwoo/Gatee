@@ -1,5 +1,6 @@
 package io.ssafy.gatee.domain.schedule.api;
 
+import com.google.firebase.messaging.FirebaseMessagingException;
 import io.ssafy.gatee.domain.schedule.application.ScheduleService;
 import io.ssafy.gatee.domain.schedule.dto.request.ScheduleEditReq;
 import io.ssafy.gatee.domain.schedule.dto.request.ScheduleParticipateReq;
@@ -57,7 +58,7 @@ public class ScheduleController {
             @Valid
             @RequestBody ScheduleSaveReq scheduleSaveReq,
             @AuthenticationPrincipal CustomUserDetails customUserDetails
-    ) throws FamilyNotFoundException {
+    ) throws FamilyNotFoundException, FirebaseMessagingException {
         scheduleService.saveSchedule(scheduleSaveReq, customUserDetails.getMemberId());
     }
 

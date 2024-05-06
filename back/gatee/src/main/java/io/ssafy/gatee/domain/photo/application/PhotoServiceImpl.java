@@ -1,5 +1,6 @@
 package io.ssafy.gatee.domain.photo.application;
 
+import com.google.firebase.messaging.FirebaseMessagingException;
 import io.ssafy.gatee.domain.family.dao.FamilyRepository;
 import io.ssafy.gatee.domain.family.entity.Family;
 import io.ssafy.gatee.domain.file.dao.FileRepository;
@@ -16,6 +17,10 @@ import io.ssafy.gatee.domain.photo.dto.request.PhotoSaveReq;
 import io.ssafy.gatee.domain.photo.dto.response.PhotoDetailRes;
 import io.ssafy.gatee.domain.photo.dto.response.PhotoListRes;
 import io.ssafy.gatee.domain.photo.entity.Photo;
+import io.ssafy.gatee.domain.push_notification.application.PushNotificationService;
+import io.ssafy.gatee.domain.push_notification.dto.request.DataFCMReq;
+import io.ssafy.gatee.domain.push_notification.dto.request.PushNotificationFCMReq;
+import io.ssafy.gatee.domain.push_notification.entity.Type;
 import io.ssafy.gatee.domain.reaction.dao.ReactionRepository;
 import io.ssafy.gatee.domain.reaction.dto.response.ReactionMemberRes;
 import io.ssafy.gatee.domain.reaction.entity.Reaction;
@@ -49,6 +54,8 @@ public class PhotoServiceImpl implements PhotoService {
     private final FileRepository fileRepository;
 
     private final PhotoRepositoryCustom photoRepositoryCustom;
+
+    private final PushNotificationService pushNotificationService;
 
     // 사진 목록 조회
     @Override
@@ -104,7 +111,7 @@ public class PhotoServiceImpl implements PhotoService {
     // 사진 등록
     @Override
     @Transactional
-    public Long savePhoto(PhotoSaveReq photoSaveReq) {
+    public Long savePhoto(PhotoSaveReq photoSaveReq, UUID memberId) throws FirebaseMessagingException {
         MemberFamily memberFamily = memberFamilyRepository.getReferenceById(photoSaveReq.memberFamilyId());
 
         File file = fileRepository.getReferenceById(photoSaveReq.fileId());
@@ -115,6 +122,20 @@ public class PhotoServiceImpl implements PhotoService {
                 .build();
 
         photoRepository.save(photo);
+
+
+        
+        // 사진 등록시 가족들에게 알림
+        pushNotificationService.sendPushOneToMany(PushNotificationFCMReq.builder()
+                        .title("앨범 사진 등록")
+                        .content(memberFamily.getMember().getName() + "님이 사진을 등록하셨습니다.")
+                        .receiverId(memberFamilyRepository.findMyFamily(memberId))
+                        .senderId(memberFamily.getMember().getId())
+                        .dataFCMReq(DataFCMReq.builder()
+                                .type(Type.ALBUM)
+                                .typeId(photo.getId())
+                                .build())
+                        .build());
 
         return photo.getId();
     }

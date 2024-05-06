@@ -1,4 +1,4 @@
-package io.ssafy.gatee.global.firebase;
+package io.ssafy.gatee.global.firebase.init;
 
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.firebase.FirebaseApp;

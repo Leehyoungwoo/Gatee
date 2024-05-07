@@ -59,7 +59,7 @@ export default function localAxios() {
           );
           console.log("리프레시 토큰 res", res)
           // 리프레시 토큰으로 accessToken 갱신
-          localStorage.setItem("accessToken", res.headers.authorization.split(' ')[1]);
+          localStorage.setItem("accessToken", res.headers.accessToken.split(' ')[1]);
           // 원래 요청 재시도
           error.config.headers.Authorization = `Bearer ${localStorage.getItem("accessToken")}`;
           return axios.request(error.config);

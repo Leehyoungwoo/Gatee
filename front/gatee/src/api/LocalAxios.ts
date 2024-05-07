@@ -1,6 +1,5 @@
 import axios from "axios";
 
-
 export default function localAxios() {
   // 스토어에 저장되어있는 토큰 가져오기
   const accessToken = localStorage.getItem("accessToken");
@@ -41,7 +40,7 @@ export default function localAxios() {
       return response;
     },
     async (error) => {
-      alert(`요청 에러남 ${error}`)
+      console.log(`요청 에러남 ${error}`)
       const code = error.response.data.code
       const errorMsg = error.response.data.message
       console.log(error)
@@ -58,13 +57,10 @@ export default function localAxios() {
             }
           );
           // 리프레시 토큰으로 accessToken 갱신
-          console.log("res",res)
-          console.log("res.headers",res.headers)
-          console.log("res.headers.accessToken",res.headers.accessToken)
           console.log("res.headers.[access-token]",res.headers["access-token"])
           localStorage.setItem("accessToken", res.headers["access-token"].split(' ')[1]);
           // 원래 요청 재시도
-          error.config.headers.Authorization = `Bearer ${localStorage.getItem("accessToken")}`;
+          error.config.headers.Authorization = `Bearer ${res.headers["access-token"].split(' ')[1]}`;
           return axios.request(error.config);
         } catch (refreshError) {
           console.log("리프레시 토큰 만료 ", refreshError)

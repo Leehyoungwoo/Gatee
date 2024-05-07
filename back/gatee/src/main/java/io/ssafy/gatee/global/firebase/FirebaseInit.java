@@ -6,11 +6,12 @@ import com.google.firebase.FirebaseOptions;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 
-@Service
+@Component
 public class FirebaseInit {
 
     @Value("${firebase.database-url}")
@@ -21,7 +22,7 @@ public class FirebaseInit {
 
     private boolean isInitialized = false;
 
-    @PostConstruct // 의존성 주입 완료 후 실행, 생성자보다 늦게 호출, 다른 리소스에서 호출되지 않아도 수행된다
+    @PostConstruct
     public void init() {
         try {
             if (!isInitialized) {

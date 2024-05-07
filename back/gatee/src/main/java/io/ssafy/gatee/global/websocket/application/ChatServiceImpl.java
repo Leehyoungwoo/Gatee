@@ -9,10 +9,10 @@ import io.ssafy.gatee.domain.member_family.dao.MemberFamilyRepository;
 import io.ssafy.gatee.domain.member_family.entity.MemberFamily;
 import io.ssafy.gatee.global.exception.error.not_found.MemberFamilyNotFoundException;
 import io.ssafy.gatee.global.exception.error.not_found.MemberNotFoundException;
+import io.ssafy.gatee.global.firebase.FirebaseInit;
 import io.ssafy.gatee.global.redis.dao.OnlineRoomMemberRepository;
 import io.ssafy.gatee.global.websocket.dto.ChatDto;
 import io.ssafy.gatee.global.websocket.dto.FireStoreChatDto;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,15 +28,25 @@ import static io.ssafy.gatee.global.exception.message.ExceptionMessage.MEMBER_NO
 
 @Service
 @Slf4j
-@RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class ChatServiceImpl implements ChatService {
 
     private final MemberRepository memberRepository;
     private final MemberFamilyRepository memberFamilyRepository;
     private final FamilyRepository familyRepository;
-    private final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+    private final DatabaseReference databaseReference;
+
     private final OnlineRoomMemberRepository onlineRoomMemberRepository;
+
+    public ChatServiceImpl(MemberRepository memberRepository, MemberFamilyRepository memberFamilyRepository, FamilyRepository familyRepository, OnlineRoomMemberRepository onlineRoomMemberRepository, FirebaseInit firebaseInit) {
+        this.memberRepository = memberRepository;
+        this.memberFamilyRepository = memberFamilyRepository;
+        this.familyRepository = familyRepository;
+        firebaseInit.init(); // Firebase 초기화 메서드 호출
+        this.databaseReference = FirebaseDatabase.getInstance().getReference();
+        this.onlineRoomMemberRepository = onlineRoomMemberRepository;
+
+    }
 
     @Override
     public void sendMessage(ChatDto chatDto) throws ExecutionException, InterruptedException {

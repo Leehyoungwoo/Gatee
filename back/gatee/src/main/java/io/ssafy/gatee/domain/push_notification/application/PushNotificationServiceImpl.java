@@ -27,7 +27,7 @@ import java.util.*;
 @RequiredArgsConstructor
 public class PushNotificationServiceImpl implements PushNotificationService {
 
-    private FirebaseInit firebaseInit;
+    private final FirebaseInit firebaseInit;
     private final GptService gptService;
     private final MemberRepository memberRepository;
     private final MemberNotificationRepository memberNotificationRepository;

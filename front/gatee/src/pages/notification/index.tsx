@@ -62,7 +62,9 @@ const NotificationIndex = () => {
   // 토스트 객체
   const list = (anchor: Anchor) => (
     <Box
-      sx={{width: 'auto'}}
+      sx={{
+        width: 'auto'
+      }}
       role="presentation"
       onKeyDown={toggleDrawer(anchor, false)}
       style={{backgroundColor:"#7B7B7B"}}

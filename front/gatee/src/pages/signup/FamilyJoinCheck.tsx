@@ -5,7 +5,12 @@ const SignupFamilyJoinCheck = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
+  // 가족 조회
+  // axios.get
+
   const goToMemberSet = () => {
+    // 가족 합류
+    // axios.post
     navigate("/signup/member-set");
   }
 

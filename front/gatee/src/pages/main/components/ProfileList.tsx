@@ -14,7 +14,7 @@ const ProfileList = ({profileDataList}: { profileDataList: Member[] }) => {
   const [clickedProfile, setClickedProfile] = useState<Member | null>(null);
   const navigate = useNavigate()
 
-  // 프로필 클릭했을 때
+  // 프로필 클릭했을때
   const handleClickProfile = (profileData:Member) => {
     // 상태 업데이트, 모달 켜주고, 모달 store 업데이트
     setClickedProfile(profileData)
@@ -61,27 +61,27 @@ const ProfileItem = ({ profileData, handleClickProfile }:ProfileItemProps) => {
     <div className="main-profile-list-item--container"
     onClick={handleClickProfileItem}>
       <p>{profileData.nickname}</p>
-      <div className="main-profile-wrapper">
-        {/*프로필 이미지*/}
-        <img className="main-profile-img" src={profileData.image} alt="프사"/>
-
-        {/*기분*/}
-        <div className="main-profile-mood">
-        {
-          profileData?.mood === "HAPPY" ?
-            <div>🥰</div>
-            :
-          profileData?.mood === "SAD" ?
-            <div>😥</div>
-            :
-          profileData?.mood === "ALONE" ?
-            <div>😑</div>
-            :
-          profileData?.mood === "ANGRY" ?
-              <div>🤬</div>
-            : null
+      <img className="main-profile-img" src={profileData.image} alt="프사"/>
+      <div className="main-profile-mood">
+        {profileData?.mood === "HAPPY" ?
+          <div>🥰</div>
+          :
+        profileData?.mood === "SAD" ?
+          <div>😥</div>
+          :
+        profileData?.mood === "ALONE" ?
+          <div>😑</div>
+          :
+        profileData?.mood === "ANGRY" ?
+          <div>🤬</div>
+          :
+        profileData?.mood === "FEAR" ?
+          <div>😱</div>
+          :
+        profileData?.mood === "SLEEPY" ?
+          <div>😪</div>
+          : null
         }
-        </div>
       </div>
     </div>
   );

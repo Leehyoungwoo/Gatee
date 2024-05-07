@@ -6,10 +6,15 @@ import { PiUserCircle } from "react-icons/pi";
 import { PiSquaresFour } from "react-icons/pi";
 // import { PiGearSix } from "react-icons/pi";
 // import NotificationBadge from "@components/NotificationBadge";
+import { useMemberStore } from "@store/useMemberStore";
+import { MemberInfoSample } from "@constants/index";
 
 const TopBar = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  // 이름 조회해야함
+  const { name } = MemberInfoSample;
+
   const [currentPage, setCurrentPage] = useState('');
 
   useEffect(() => {
@@ -52,7 +57,9 @@ const TopBar = () => {
         </NavLink>
 
         {/*프로필*/}
-        <NavLink to="/profile" className={({isActive}) =>
+        <NavLink
+          to={`/profile/${name}`}
+          className={({isActive}) =>
           isActive ? 'top-bar__right--active' : ''
         }>
           <PiUserCircle size={24}/>

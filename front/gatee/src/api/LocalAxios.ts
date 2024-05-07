@@ -45,8 +45,7 @@ export default function localAxios() {
       const errorMsg = error.response.data.message
       console.log(error)
       // 만약 에러의 이유가 토큰의 유효기간이 만료된 것이라면
-      if ((code === 401 && errorMsg === "토큰이 만료되었습니다.") || code === 403) {
-
+      if ((code === 401 && errorMsg === "토큰이 만료되었습니다.")) {
         try {
           // 리프레시 토큰 요청
           const res = await axios.post(

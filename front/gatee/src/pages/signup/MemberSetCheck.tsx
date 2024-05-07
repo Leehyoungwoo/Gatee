@@ -7,25 +7,25 @@ import { ReactComponent as FemaleKid } from "@assets/images/signup/daughter.svg"
 import { ReactComponent as FemaleYoung } from "@assets/images/signup/mom.svg";
 import { ReactComponent as FemaleOld } from "@assets/images/signup/grandma.svg";
 import { IoIosCamera } from "react-icons/io";
+import { useMemberStore } from "@store/useMemberStore";
 
 const SignupMemberSetCheck = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const inputName = location.state?.inputName || "홍길동";
-  const formattedDate = location.state?.formattedDate || "2024-04-05";
-  const calendarType = location.state?.calendarType || "solar";
   const gender = location.state?.gender || "male";
-  const selectedRole = location.state?.selectedRole || "dad";
   const selectedIcon = location.state?.selectedIcon || "kid";
-  const inputRole = location.state?.inputRole || "";
+
+  const { name, role, birthDay, memberImage,setMemberImage, icon } = useMemberStore();
 
   const [selectedProfileImage, setSelectedProfileImage] = useState<string | ArrayBuffer | null>(null);
 
+  // 다음 넘어가기
   const goToMemberSetPermission = () => {
     navigate("/signup/member-set/permission");
   }
 
+  // 뒤로 가기
   const backTo = () => {
     navigate(-1);
   }
@@ -36,7 +36,7 @@ const SignupMemberSetCheck = () => {
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
-        setSelectedProfileImage(reader.result);
+        setMemberImage(reader.result);
       };
       reader.readAsDataURL(file);
     }
@@ -49,31 +49,15 @@ const SignupMemberSetCheck = () => {
     }
   }
 
-  // 역할 변환 함수
-  const changeRole = (role: string): string => {
-    switch (role) {
-      case "dad":
-        return "아빠";
-      case "son":
-        return "아들";
-      case "mom":
-        return "엄마";
-      case "daughter":
-        return "딸";
-      default:
-        return role;
-    }
-  }
-
   // 날짜 형식 변환 함수
-    const changeDate = (originalDate: string): string => {
-      const date = new Date(originalDate);
-      const year = date.getFullYear();
-      const month = date.getMonth() + 1;
-      const day = date.getDate();
+  const changeDate = (originalDate: string): string => {
+    const date = new Date(originalDate);
+    const year = date.getFullYear();
+    const month = date.getMonth() + 1;
+    const day = date.getDate();
 
-      return `${year}.${month}.${day}`;
-    }
+    return `${year}.${month}.${day}`;
+  }
 
   return (
     <div className="signup-member-set-check">
@@ -87,15 +71,15 @@ const SignupMemberSetCheck = () => {
       {/*이미지*/}
       <div className="signup-member-set-check__img-box">
         {/*이미지 선택*/}
-        {selectedProfileImage && (
+        {memberImage && (
           <img
             className="img-box__img-selected"
-            src={selectedProfileImage.toString()}
+            src={memberImage ? memberImage.toString() : icon}
             alt="profile-image"
           />
         )}
         {/*기본 이미지*/}
-        {!selectedProfileImage && (
+        {!memberImage && (
           <>
             {gender === "male" && selectedIcon === "kid" &&
               <MaleKid className="img-box__img-male-kid" />
@@ -140,7 +124,7 @@ const SignupMemberSetCheck = () => {
         <div className="info-header">
           <div className="info-header__name">
             <span className="name--text">
-              {inputName}
+              {name}
             </span>
           </div>
         </div>
@@ -150,7 +134,7 @@ const SignupMemberSetCheck = () => {
               당신의 역할은
             </span>
             <span className="role__part--02">
-              &nbsp;{inputRole ? inputRole : changeRole(selectedRole)}
+              &nbsp;{role}
             </span>
             <span className="role__part--03">
               입니다
@@ -158,7 +142,7 @@ const SignupMemberSetCheck = () => {
           </div>
           <div className="info-body__birth">
             <span className="birth__part--01">
-              {changeDate(formattedDate)}
+              {birthDay ? changeDate(birthDay) : null}
             </span>
             <span className="birth__part--02">
               에 태어났어요

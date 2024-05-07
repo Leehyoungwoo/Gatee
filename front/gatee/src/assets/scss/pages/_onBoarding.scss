@@ -128,3 +128,47 @@
     background-color: $orange400;
   }
 }
+
+.ios {
+  @include flex_center;
+
+  background-color: white;
+  padding-bottom: 25px;
+  text-align: center;
+  padding-top: 30px;
+  border-bottom-left-radius: 2rem;
+  border-bottom-right-radius: 2rem;
+
+  .ios-header__part--01 {
+    font-size: 20px;
+    margin-bottom: 2%;
+  }
+
+  .ios-header__part--02 {
+    font-weight: bold;
+    font-size: 17px;
+    margin-bottom: 2%;
+  }
+}
+
+.android {
+  @include flex_center;
+
+  background-color: white;
+  padding-bottom: 25px;
+  text-align: center;
+  padding-top: 30px;
+  border-bottom-left-radius: 2rem;
+  border-bottom-right-radius: 2rem;
+
+  .android-header__part--01 {
+    font-size: 20px;
+    margin-bottom: 2%;
+  }
+
+  .android-header__part--02 {
+    font-weight: bold;
+    font-size: 17px;
+    margin-bottom: 2%;
+  }
+}

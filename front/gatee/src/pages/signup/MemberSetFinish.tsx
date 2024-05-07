@@ -1,14 +1,10 @@
-import React from 'react';
+import React, {useMemo} from 'react';
 import { useNavigate } from "react-router-dom";
 import Finish from "@assets/images/signup/finish.svg"
+import { MemberInfoSample } from "@constants/index";
 
 const SignupMemberSetFinish = () => {
   const navigate = useNavigate();
-
-  const member = {
-    id: "33",
-    memberName: "홍길동",
-  }
 
   const goToMain = () => {
     navigate("/main");
@@ -20,7 +16,7 @@ const SignupMemberSetFinish = () => {
       <div className="signup-member-set-finish__title">
         <div className="title__header">
           <span className="title__part--01">
-            {member.memberName}
+            {MemberInfoSample.name}
           </span>
           <span className="title__part--02">
             님,

@@ -3,15 +3,22 @@ import { BiCopy } from "react-icons/bi";
 import { useNavigate, useLocation } from "react-router-dom";
 import SampleFamily from "@assets/images/signup/sample.svg"
 import { ReactComponent as KaKaoMessage } from "@assets/images/signup/kakao_message.svg";
+import axios from "axios";
+import { useFamilyStore } from "@store/useFamilyStore";
+import homeIcon from "@assets/images/logo/app_icon_orange.svg"
 
 const SignupFamilySetShare = () => {
   const navigate = useNavigate();
-  const location = useLocation();
-  const inputValue = location.state?.inputValue || "";
-  const selectedImage = location.state?.selectedImage || "";
   const web: string = "http://localhost:3000"
   const mobile_home: string = "http://192.168.35.47:3000"
   const mobile_ssafy: string = "http://70.12.247.24:3000"
+
+  // 가족 조회하기
+  // axios.get
+  // 가족 코드 생성하기
+  // axios.get
+
+  const { familyName, familyImage } = useFamilyStore();
 
   const goToMemberSet = () => {
     navigate("/signup/member-set");
@@ -20,13 +27,30 @@ const SignupFamilySetShare = () => {
   // 카카오 공유하기 버튼
   const kakaoMessage = () => {
     window.Kakao.Share.sendDefault({
-      objectType: 'text',
-      text:
-        '나의 가조쿠가 되어라',
-      link: {
-        mobileWebUrl: mobile_ssafy,
-        webUrl: web,
+      objectType: 'feed',
+      content: {
+        title: `${familyName}에서 초대가 왔어요!`,
+        description: '초대코드: ABCDEFGH',
+        imageUrl:
+          'https://img.freepik.com/premium-vector/happy-family-illustration_1124-508.jpg?w=1060',
+        link: {
+          mobileWebUrl: 'https://gaty.duckdns.org',
+          webUrl: 'https://gaty.duckdns.org',
+        },
       },
+      itemContent: {
+        profileText: '가티 - 피는 물보다 진하다',
+        profileImageUrl: 'https://mud-kage.kakao.com/dn/NTmhS/btqfEUdFAUf/FjKzkZsnoeE4o19klTOVI1/openlink_640x640s.jpg', //url로 가져와야할듯
+      },
+      buttons: [
+        {
+          title: '앱으로 이동',
+          link: {
+            mobileWebUrl: 'https://gaty.duckdns.org',
+            webUrl: 'https://gaty.duckdns.org',
+          },
+        },
+      ],
     });
   }
 
@@ -42,7 +66,7 @@ const SignupFamilySetShare = () => {
       <div className="signup-family-set-share__img">
         <img
           className="img"
-          src={selectedImage || SampleFamily}
+          src={familyImage?.toString() || SampleFamily}
           alt="family-image"
         />
       </div>
@@ -50,7 +74,7 @@ const SignupFamilySetShare = () => {
       {/*가족 이름*/}
       <div className="signup-family-set-share__name">
         <span className="name">
-          {inputValue}
+          {familyName}
         </span>
       </div>
 

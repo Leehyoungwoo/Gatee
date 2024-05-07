@@ -1,32 +1,31 @@
-import React, { useState } from 'react';
+import React, {useRef, useState} from 'react';
 import { useLocation, useNavigate } from "react-router-dom";
 import SignupMemberSetRoleMale from "@pages/signup/components/MemberSetRoleMale";
 import SignupMemberSetRoleFemale from "@pages/signup/components/MemberSetRoleFemale";
+import { useMemberStore } from "@store/useMemberStore";
 
 const SignupMemberSetRole = () => {
+  const inputRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
-  const location = useLocation();
-  const inputName = location.state?.inputName || "홍길동";
-  const formattedDate = location.state?.formattedDate || "2024-04-05";
-  const calendarType = location.state?.calendarType || "solar";
-  const gender = location.state?.gender || "male";
 
-  const [selectedRole, setSelectedRole] = useState(gender === "male" ? "dad" : "mom");
-  const [selectedIcon, setSelectedIcon] = useState("kid");
-  const [inputRole, setInputRole] = useState("");
+  const { role, gender, icon } = useMemberStore();
+
+  const [selectedIcon, setSelectedIcon] = useState("");
+  const [errorMessage, setErrorMessage] = useState<string>("");
 
   const goToMemberSetCheck = () => {
-    navigate("/signup/member-set/check", {
-      state: {
-        inputName,
-        formattedDate,
-        calendarType,
-        gender,
-        selectedRole,
-        selectedIcon,
-        inputRole,
+    // 입력값 검증
+    if (role?.length < 1 || role?.length > 6 || !/^[가-힣]*$/.test(role)) {
+      // 오류 메시지 설정
+      setErrorMessage("한글로 1~6글자를 입력해주세요.");
+      // 재포커싱
+      if (inputRef.current) {
+        inputRef.current.focus();
       }
-    });
+      return; // 함수 실행 중단
+    } else {
+      navigate("/signup/member-set/check");
+    }
   }
 
   return (
@@ -35,23 +34,17 @@ const SignupMemberSetRole = () => {
       <div className="signup-member-set-role__choice">
         {gender === "male" ? (
           <SignupMemberSetRoleMale
-            gender={gender}
-            selectedRole={selectedRole}
-            setSelectedRole={setSelectedRole}
-            selectedIcon={selectedIcon}
-            setSelectedIcon={setSelectedIcon}
-            inputRole={inputRole}
-            setInputRole={setInputRole}
+            inputRef={inputRef}
+            goToMemberSetCheck={goToMemberSetCheck}
+            errorMessage={errorMessage}
+            setErrorMessage={setErrorMessage}
           />
         ) : (
           <SignupMemberSetRoleFemale
-            gender={gender}
-            selectedRole={selectedRole}
-            setSelectedRole={setSelectedRole}
-            selectedIcon={selectedIcon}
-            setSelectedIcon={setSelectedIcon}
-            inputRole={inputRole}
-            setInputRole={setInputRole}
+            inputRef={inputRef}
+            goToMemberSetCheck={goToMemberSetCheck}
+            errorMessage={errorMessage}
+            setErrorMessage={setErrorMessage}
           />
         )}
       </div>
@@ -61,6 +54,7 @@ const SignupMemberSetRole = () => {
         <button
           className="btn-next"
           onClick={goToMemberSetCheck}
+          disabled={!icon || !role}
         >
             <span className="btn-next__text">
               다음

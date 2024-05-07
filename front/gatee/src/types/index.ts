@@ -7,6 +7,7 @@ export interface Member {
   birthType: string;
   image: string;
   mood: string | null;
+  phoneNumber: string | null;
 }
 
 export interface Question {

@@ -9,7 +9,10 @@ const SignupMemberSetPermission = () => {
   const [pushChecked, setPushChecked] = useState(false);
   const [cameraChecked, setCameraChecked] = useState(false);
 
+  // 멤버 생성
   const goToMemberSetFinish = () => {
+    // 회원 정보 등록
+    // axios.post
     navigate("/signup/member-set/finish");
   }
 

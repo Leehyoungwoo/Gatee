@@ -8,10 +8,10 @@ const SignupAuth = () => {
   const tokenUrl: string = `https://kauth.kakao.com/oauth/token`
   const kakaoJavaScriptApiKey: string | undefined = process.env.REACT_APP_KAKAO_JAVASCRIPT_KEY;
   // 로컬로 할때는 이거 켜기
-  //  const web: string = "http://localhost:3000/auth"
+  const local_web: string = "http://localhost:3000/auth"
   const mobile_home: string = "http://192.168.35.47:3000/auth"
   const mobile_yebin: string = "http://192.168.137.1:3000/auth"
-  const mobile_ssafy: string = "http://70.12.247.24:3000/auth"
+  const mobile_taehyeon: string = "http://70.12.247.24:3000/auth"
   // 서버로 할땐 이거 켜기
   const web: string = "https://gaty.duckdns.org/auth"
   // 토큰 상태 관리
@@ -41,6 +41,7 @@ const SignupAuth = () => {
         const kakao_access_token: string = response.data.access_token;
         console.log(response.data);
         console.log(kakao_access_token);
+        alert("카카오 토큰 받기 성공")
 
         axios.post(
           'https://gaty.duckdns.org/api/auth/kakao/login', null,  {
@@ -66,12 +67,17 @@ const SignupAuth = () => {
           setAccessToken(token);
           // 로컬 스토리지에 엑세스 토큰 저장
           localStorage.setItem("accessToken", token);
+          alert(token)
           navigate("/signup");
         }).catch(error => {
           console.log(error.response);
+          alert("서버 토큰 받기 실패")
+          alert(error.response)
         })
       }).catch(error => {
         console.error(error);
+        alert("카카오 토큰 받기 실패")
+        alert(error)
       })
     }
   }

@@ -1,20 +1,18 @@
 import React from 'react';
 import { useNavigate, useLocation } from "react-router-dom";
 import SampleFamily from "@assets/images/signup/sample.svg"
+import { useFamilyStore } from "@store/useFamilyStore";
+import axios from "axios";
 
 const SignupFamilySetCheck = () => {
   const navigate = useNavigate();
-  const location = useLocation();
-  const inputValue = location.state?.inputValue || "";
-  const selectedFamilyImage = location.state?.selectedFamilyImage || "";
-  console.log(selectedFamilyImage)
+  const { familyName, familyImage } = useFamilyStore();
+
+
   const goToFamilySetCheck = () => {
-    navigate("/signup/family-set/share", {
-      state: {
-        inputValue,
-        selectedFamilyImage
-      }
-    });
+    // 가족 생성하기
+    // axios.post
+    navigate("/signup/family-set/share");
   }
 
   const backTo = ():void => {
@@ -37,14 +35,14 @@ const SignupFamilySetCheck = () => {
       <div className="signup-family-set-check__img">
         <img
           className="img"
-          src={selectedFamilyImage || SampleFamily}
+          src={familyImage?.toString() || SampleFamily}
           alt="family-image"
         />
       </div>
 
       {/*가족 이름*/}
       <div className="signup-family-set-check__name">
-        <span className="name">{inputValue}</span>
+        <span className="name">{familyName}</span>
       </div>
 
       <div className="signup-family-set-check__btn">
@@ -64,7 +62,7 @@ const SignupFamilySetCheck = () => {
           onClick={backTo}
         >
           <span className="btn-back__text">
-            다르게 소개할래요
+            다시 입력할래요
           </span>
         </button>
       </div>

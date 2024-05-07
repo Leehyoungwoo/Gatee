@@ -12,7 +12,8 @@ import NotificationIndex from "@pages/notification";
 import OnboardingIndex from "@pages/onboarding/index";
 import KaKaoLogin from "@pages/onboarding/components/KaKaoLogin";
 import ProfileIndex from "@pages/profile";
-import ScheduleIndex from "@pages/schedule";
+import ProfileModify from "@pages/profile/modify";
+import ScheduleIndex from "@pages/schedule/index";
 import ScheduleCreateSchedule from "@pages/schedule/Create";
 import ScheduleCreateReview from "@pages/schedule/CreateReview";
 import ScheduleDetail from "@pages/schedule/ScheduleDetail";
@@ -64,6 +65,7 @@ const Router = () => {
 
         {/*프로필 페이지*/}
         <Route path="/profile/:name" element={<ProfileIndex/>}/>
+        <Route path="/profile/:name/modify" element={<ProfileModify/>}/>
 
         {/*메인 페이지*/}
         <Route path="/main" element={<MainIndex/>}/>

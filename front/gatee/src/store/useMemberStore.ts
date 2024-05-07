@@ -13,19 +13,26 @@ type MemberStore = {
     setRefreshToken: (newRefreshToken: string) => void;
     memberId: string | null;
     setMemberId: (newMemberId: string) => void;
-    name: string | null;
+    name: string;
     setName: (newName: string) => void;
     nickname: string | null;
     setNickName: (newNickname: string) => void;
-    birth: {
-        birthDay: string | null;
-        birthType: string;
-    };
-    setBirth: (newBirth: BirthInfo) => void;
-    role: string | null;
-    setRoll: (newRole: string) => void;
+    birthDay: string | null;
+    setBirthDay: (newBirthDay: string) => void;
+    birthType: string;
+    setBirthType: (newBirthType: string) => void;
+    role: string;
+    setRole: (newRole: string) => void;
     mood: string;
     setMood: (newMood: string) => void;
+    phoneNumber: string;
+    setPhoneNumber: (newPhoneNumber: string) => void;
+    gender: string;
+    setGender: (newGender: string) => void;
+    icon: string;
+    setIcon: (newIcon: string) => void;
+    memberImage: string | ArrayBuffer | null;
+    setMemberImage: (newImage: string | ArrayBuffer | null) => void
 };
 
 export const useMemberStore = create<MemberStore>()(
@@ -40,15 +47,22 @@ export const useMemberStore = create<MemberStore>()(
     setName: (newName: string) => set({ name: newName }),
     nickname: null,
     setNickName: (newNickname: string) => set({ nickname: newNickname }),
-    birth: {
-        birthDay: null,
-        birthType: "SOLAR",
-    },
-    setBirth: (newBirth: BirthInfo) => set({ birth: newBirth }),
-    role: null,
-    setRoll: (newRole: string) => set({ role: newRole }),
+    birthDay: null,
+    setBirthDay: (newBirthDay: string) => set({ birthDay: newBirthDay }),
+    birthType: "SOLAR",
+    setBirthType: (newBirthType: string) => set({ birthType: newBirthType }),
+    role: "",
+    setRole: (newRole: string) => set({ role: newRole }),
     mood: "default",
     setMood: (newMood: string) => set({ mood: newMood }),
+    phoneNumber: "",
+    setPhoneNumber: (newPhoneNumber: string) => set({ phoneNumber: newPhoneNumber }),
+    gender: "",
+    setGender: (newGender: string) => set({ gender: newGender }),
+    icon: "",
+    setIcon: (newIcon: string) => set({ icon: newIcon }),
+  memberImage: null,
+  setMemberImage: (newImage: string | ArrayBuffer | null) => set({memberImage: newImage}),
         }),
         {
             name: "member",

@@ -1,31 +1,31 @@
 // v9
-import {initializeApp} from "firebase/app";
-import {getMessaging, getToken,isSupported} from "firebase/messaging";
-import {getPushAlarmByLocalStorage} from "@api/FirebaseAxios";
-import {firebaseConfig,VALID_KEY} from "./config";
-
-let messaging
-if (isSupported()) {
-  const app = initializeApp(firebaseConfig);
-  messaging = getMessaging(app)
-}
-
-// v8
-
-// import firebase from 'firebase/app'
-// import 'firebase/messaging'
+// import {initializeApp} from "firebase/app";
+// import {getMessaging, getToken,isSupported} from "firebase/messaging";
 // import {getPushAlarmByLocalStorage} from "@api/FirebaseAxios";
 // import {firebaseConfig,VALID_KEY} from "./config";
 //
 // let messaging
-// // 브라우저 문제로 오류나서 추가한 것
-// if (firebase.messaging.isSupported()) {
-//   const app = firebase.initializeApp(firebaseConfig);
-//   messaging = firebase.messaging(app)
+// if (isSupported()) {
+//   // const app = initializeApp(firebaseConfig);
+//   // messaging = getMessaging(app)
 // }
 
+// v8
+
+import firebase from 'firebase/app';
+import 'firebase/messaging';
+import { getPushAlarmByLocalStorage } from "@api/FirebaseAxios";
+import { firebaseConfig, VALID_KEY, app } from "./config";
+
+let messaging
+// 브라우저 문제로 오류나서 추가한 것
+if (firebase.messaging.isSupported()) {
+  // const app = firebase.initializeApp(firebaseConfig);
+  messaging = firebase.messaging(app)
+}
+
 export async function requestPermission() {
-  if (isSupported()) {
+  if (firebase.messaging.isSupported()) {
     console.log("FCM 알림 권한 요청 시작");
     const permission = await Notification.requestPermission();
     if (permission === "denied") {
@@ -36,15 +36,15 @@ export async function requestPermission() {
     }
 
     // 사용자 디바이스 토큰 얻기
-    //v9
-    const token = await getToken(messaging, {
-      vapidKey: VALID_KEY,
-    });
-
-    // v8
-    // const token = await messaging.getToken({
+    // //v9
+    // const token = await getToken(messaging, {
     //   vapidKey: VALID_KEY,
     // });
+
+    // v8
+    const token = await messaging.getToken({
+      vapidKey: VALID_KEY,
+    });
 
     // 토큰 조회한 뒤, 서버로 토큰 구독
     if (token) {

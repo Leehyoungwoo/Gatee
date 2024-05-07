@@ -2,23 +2,18 @@ import React, { useState } from 'react';
 import { useNavigate, useLocation } from "react-router-dom";
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { AiOutlineMan } from "react-icons/ai";
 import { AiOutlineWoman } from "react-icons/ai";
 import dayjs, { Dayjs } from 'dayjs';
 import { DateField } from '@mui/x-date-pickers/DateField';
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
+import { useMemberStore } from "@store/useMemberStore";
 
 const SignupMemberSetBirth = () => {
   const navigate = useNavigate();
-  const location = useLocation();
-  const inputName = location.state?.inputName || "";
 
-  const [selectedDate, setSelectedDate] = useState<Dayjs | null>(dayjs("2024-04-05"));
-  const [calendarType, setCalendarType] = useState("solar");
-  const [gender, setGender] = useState("male");
+  const { birthDay, birthType, gender, setBirthDay, setBirthType, setGender } = useMemberStore();
 
-  const formattedDate = selectedDate ? selectedDate.format("YYYY-MM-DD") : "";
   const dateFieldCustom = {
     "& .MuiOutlinedInput-root": {
       color: "#000",
@@ -37,19 +32,19 @@ const SignupMemberSetBirth = () => {
     },
   };
 
-  const handleSetSelectedDateChange = (date: Dayjs | null) => {
-    setSelectedDate(date); // 선택된 날짜를 업데이트
+  // 날짜 형식 검증 함수 (YYYY-MM-DD)
+  const isValidDateFormat = (date: string) => {
+    return /^\d{4}-\d{2}-\d{2}$/.test(date);
   };
 
+  // 날짜 핸들러
+  const handleSetSelectedDateChange = (date: Dayjs | null) => {
+    setBirthDay(date ? date.format("YYYY-MM-DD") : "");
+  };
+
+  // 다음으로 가기
   const goToMemberSetRole = () => {
-    navigate("/signup/member-set/role", {
-      state: {
-        inputName,
-        formattedDate,
-        calendarType,
-        gender
-      }
-    });
+    navigate("/signup/member-set/role");
   }
 
   return (
@@ -75,11 +70,11 @@ const SignupMemberSetBirth = () => {
                 className="birthday-datefield__input"
                 format="YYYY / MM / DD"
                 autoFocus={true}
-                value={selectedDate}
+                value={birthDay ? dayjs(birthDay) : null}
                 onChange={handleSetSelectedDateChange}
                 inputProps={{
                   style: {
-                    textAlign: "center", fontSize: "24px" },
+                    textAlign: "center", fontSize: "23px" },
                 }}
                 sx={dateFieldCustom}
               />
@@ -89,36 +84,36 @@ const SignupMemberSetBirth = () => {
         <div className="birthday-choice">
           <button
             className="birthday-choice__btn-solar"
-            onClick={() => setCalendarType("solar")}
+            onClick={() => setBirthType("SOLAR")}
           >
             <input
               className="btn-solar__input"
               type="radio"
               name="calendarType"
-              value="solar"
-              checked={calendarType === "solar"}
-              onChange={(e) => setCalendarType(e.target.value)}
+              value="SOLAR"
+              checked={birthType === "SOLAR"}
+              onChange={(e) => setBirthType(e.target.value)}
             />
             <label
-              className={calendarType === "solar" ? "btn-solar__input--label--selected" : "btn-solar__input--label"}
+              className={birthType === "SOLAR" ? "btn-solar__input--label--selected" : "btn-solar__input--label"}
             >
               양력
             </label>
           </button>
           <button
             className="birthday-choice__btn-lunar"
-            onClick={() => setCalendarType("lunar")}
+            onClick={() => setBirthType("LUNAR")}
           >
             <input
               className="btn-lunar__input"
               type="radio"
               name="calendarType"
               value="lunar"
-              checked={calendarType === "lunar"}
-              onChange={(e) => setCalendarType(e.target.value)}
+              checked={birthType === "LUNAR"}
+              onChange={(e) => setBirthType(e.target.value)}
             />
             <label
-              className={calendarType === "lunar" ? "btn-lunar__input--label--selected" : "btn-lunar__input--label"}
+              className={birthType === "LUNAR" ? "btn-lunar__input--label--selected" : "btn-lunar__input--label"}
             >
               음력
             </label>
@@ -163,6 +158,7 @@ const SignupMemberSetBirth = () => {
         <button
           className="btn-next"
           onClick={goToMemberSetRole}
+          disabled={!birthDay || !gender || !isValidDateFormat(birthDay)}
         >
             <span className="btn-next__text">
               다음

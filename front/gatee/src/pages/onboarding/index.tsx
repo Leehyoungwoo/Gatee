@@ -8,6 +8,14 @@ import * as events from "node:events";
 import { isBoolean } from "@craco/craco/dist/lib/utils";
 import { useNavigate } from "react-router-dom";
 import { useMemberStore } from "@store/useMemberStore";
+import axios from "axios";
+import Ios from "@pages/onboarding/components/Ios"
+import Android from "@pages/onboarding/components/Android"
+import { useModalStore } from "@store/useModalStore";
+import Box from "@mui/material/Box";
+import SwipeableDrawer from '@mui/material/SwipeableDrawer';
+
+type Anchor = 'top' | 'left' | 'bottom' | 'right';
 
 // 공식 문서 : https://react-slick.neostack.com/docs/api
 const OnboardingIndex = () => {
@@ -18,23 +26,102 @@ const OnboardingIndex = () => {
 
   const { accessToken } = useMemberStore();
 
-  // 엑세스 토큰 있을때 보내주는거 주석처리
-  // useEffect(() => {
-  //   if (accessToken) {
-  //     navigate("/main");
-  //   }
-  // }, []);
+  //토큰이 있는 경우
+  useEffect(() => {
+    if (accessToken) {
+      // navigate("/main");
+      // 가족 조회
+      // axios.get(
+      //   `${server}/api/family/1`, null, {
+      //     headers: {
+      //       Authorization: accessToken
+      //     }
+      //   }
+      // ).then(response => {
+            // 가족이 있으면 멤버 조회
+            // 가족이 없으면 가족 생성으로 가기
+            // axios.get(
+            //   `${server}/api/${}`, null, {
+            //     headers: {
+            //
+            //     }
+            //   }
+            // ).then(response => {
+            //   // 멤버도 있으면 main으로 보내기
+            //   navigate('/main')
+            //   }
+            //   // 멤버가 없으면 멤버형성으로 보내기
+            //   navigate('/signup/member-set')
+            // ).catch(error => {
+            //   }
+            // )
+      //   }
+      // ).catch(error => {
+      //    // r
+      //   }
+      // )
+    }
+  }, []);
+
+  const [deviceType, setDeviceType] = useState('unknown');
 
   // 기기 파악
   useEffect(() => {
     const isDeviceIOS = /iPad|iPhone|iPod/.test(window.navigator.userAgent);
 
     if (isDeviceIOS) {
-      console.log("IOS")
+      setDeviceType('ios');
     } else {
-      console.log("Not an iOS")
+      setDeviceType('android');
     }
   }, []);
+
+  // 모달 상태 적용
+  const { setShowModal } = useModalStore();
+  // 열린지 닫힌지 상태 확인 가능
+  const [state, setState] = useState({
+    top: true,
+  });
+
+  // MUI 관련 코드 -> 슬라이드 다운 해서 내리기 기능 가능
+  const toggleDrawer =
+    (anchor: Anchor, open: boolean) =>
+      (event: React.KeyboardEvent | React.MouseEvent) => {
+        console.log(anchor)
+        if (open === true){
+          setShowModal(true)
+        } else {
+          setShowModal(false)
+        }
+        if (
+          event &&
+          event.type === 'keydown' &&
+          ((event as React.KeyboardEvent).key === 'Tab' ||
+            (event as React.KeyboardEvent).key === 'Shift')
+        ) {
+          return;
+        }
+        setState({...state, [anchor]: open});
+      };
+
+  // 토스트 객체
+  const list = (anchor: Anchor) => (
+    <Box
+      sx={{
+        width: 'auto'
+      }}
+      role="presentation"
+      onKeyDown={toggleDrawer(anchor, true)}
+      style={{backgroundColor:"#7B7B7B"}}
+    >
+      {/* 토스트 팝업 되는 컴포넌트 넣기 */}
+      {deviceType === 'ios' ? (
+        <Ios />
+      ) : (
+        <Android />
+      )}
+    </Box>
+  );
 
   // 슬라이더 세팅
   var settings
@@ -92,6 +179,16 @@ const OnboardingIndex = () => {
 
   return (
     <div className="onboarding__container-center">
+      <React.Fragment key={"bottom"}>
+        <SwipeableDrawer
+          anchor={"top"}
+          open={state["top"]}
+          onClose={toggleDrawer("top", false)}
+          onOpen={toggleDrawer("top", true)}>
+          {list("bottom")}
+        </SwipeableDrawer>
+      </React.Fragment>
+
       {/* 상단 인덱스 표시 도트 */}
       <Indicator/>
 

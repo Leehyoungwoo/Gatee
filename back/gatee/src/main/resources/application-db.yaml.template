@@ -10,7 +10,9 @@ spring:
     properties:
       hibernate:
         format_sql: true
-
+firebase:
+  database-url: ${FIREBASE_DATABASE_URL}
+  admin-sdk-path: ${FIREBASE_PATH}
 ---
 spring:
   config:

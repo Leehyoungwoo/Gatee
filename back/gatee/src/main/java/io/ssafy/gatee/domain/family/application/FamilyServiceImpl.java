@@ -14,6 +14,8 @@ import io.ssafy.gatee.domain.member_family.entity.MemberFamily;
 import io.ssafy.gatee.global.exception.error.bad_request.ExpiredCodeException;
 import io.ssafy.gatee.global.exception.error.not_found.FamilyNotFoundException;
 import io.ssafy.gatee.global.exception.error.not_found.MemberFamilyNotFoundException;
+import io.ssafy.gatee.global.redis.dao.OnlineRoomMemberRepository;
+import io.ssafy.gatee.global.redis.dto.OnlineRoomMember;
 import jodd.util.StringUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,9 +24,7 @@ import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.Random;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 import static io.ssafy.gatee.global.exception.message.ExceptionMessage.*;
@@ -42,6 +42,8 @@ public class FamilyServiceImpl implements FamilyService {
     private final MemberFamilyRepository memberFamilyRepository;
 
     private final StringRedisTemplate redisTemplate;
+
+    private final OnlineRoomMemberRepository onlineRoomMemberRepository;
 
     // 가족 생성
     @Override
@@ -61,8 +63,13 @@ public class FamilyServiceImpl implements FamilyService {
                 .family(family)
                 .isLeader(true)
                 .build();
+        HashSet<UUID> usersSet = new HashSet<>();
 
         memberFamilyRepository.save(memberFamily);
+        onlineRoomMemberRepository.save(OnlineRoomMember.builder()
+                .id(family.getId())
+                .onlineUsers(usersSet)
+                .build());
     }
 
     // 가족 코드 생성

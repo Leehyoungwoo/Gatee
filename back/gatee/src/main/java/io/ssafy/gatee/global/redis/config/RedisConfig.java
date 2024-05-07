@@ -1,4 +1,4 @@
-package io.ssafy.gatee.global.redis;
+package io.ssafy.gatee.global.redis.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;

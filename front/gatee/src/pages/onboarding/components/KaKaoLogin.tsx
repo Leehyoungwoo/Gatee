@@ -6,12 +6,12 @@ import { ReactComponent as KaKao } from "@assets/images/signup/kakao_narrow.svg"
 const KaKaoLogin = () => {
   // 카카오 로그인
   // 로컬로 할때는 이거 켜기
-  const web: string = "http://localhost:3000/auth"
+  // const web: string = "http://localhost:3000/auth"
   const mobile_home: string = "http://192.168.35.47:3000/auth"
   const mobile_yebin: string = "http://192.168.137.1:3000/auth"
   const mobile_ssafy: string = "http://70.12.247.24:3000/auth"
   // 서버로 할때는 이거 켜기
-  // const web: string = "https://gaty.duckdns.org/auth"
+  const web: string = "https://gaty.duckdns.org/auth"
   const loginWithKaKao = () => {
     window.Kakao.Auth.authorize({
       redirectUri: web,

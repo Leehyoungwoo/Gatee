@@ -8,7 +8,7 @@ const SignupAuth = () => {
   const tokenUrl: string = `https://kauth.kakao.com/oauth/token`
   const kakaoJavaScriptApiKey: string | undefined = process.env.REACT_APP_KAKAO_JAVASCRIPT_KEY;
   // 로컬로 할때는 이거 켜기
-  // const web: string = "http://localhost:3000/auth"
+  //  const web: string = "http://localhost:3000/auth"
   const mobile_home: string = "http://192.168.35.47:3000/auth"
   const mobile_yebin: string = "http://192.168.137.1:3000/auth"
   const mobile_ssafy: string = "http://70.12.247.24:3000/auth"

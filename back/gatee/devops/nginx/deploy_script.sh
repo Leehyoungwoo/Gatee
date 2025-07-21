@@ -44,7 +44,7 @@ if [ "$HEALTHY_COUNT" -eq 2 ]; then
   echo "${BEFORE_COMPOSE_COLOR} environment down"
 
 else
-  echo "❌ Not all containers are healthy yet. $HEALTHY_COUNT/$CONTAINER_COUNT"
+  echo "Not all containers are healthy yet. $HEALTHY_COUNT/2"
 
   # 1. 새 버전 종료
   docker-compose -p ${DOCKER_APP_NAME}-${AFTER_COMPOSE_COLOR} -f docker-compose.${AFTER_COMPOSE_COLOR}.yaml down

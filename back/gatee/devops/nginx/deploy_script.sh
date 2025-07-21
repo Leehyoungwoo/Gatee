@@ -31,19 +31,24 @@ CONTAINER_COUNT=$(docker-compose -p ${DOCKER_APP_NAME}-${AFTER_COMPOSE_COLOR} -f
 # 컨테이너가 제대로 작동하는지 확인하기 위해 반환값 체크
 HEALTHY_COUNT=$(docker-compose -p ${DOCKER_APP_NAME}-${AFTER_COMPOSE_COLOR} -f docker-compose.${AFTER_COMPOSE_COLOR}.yaml ps -q | xargs -I {} docker inspect --format '{{.Name}} {{if .State.Health}}{{.State.Health.Status}}{{end}}' {} | awk -v app_name="/gatee-api-${AFTER_COMPOSE_COLOR}" '$0 ~ app_name && $NF == "healthy" {count++} END {print count+0}')
 
-# 'healthy' 상태의 컨테이너 수를 확인하여 모두 'healthy' 상태라면 nginx 설정 변경 및 이전 환경 종료
 if [ "$HEALTHY_COUNT" -eq 2 ]; then
-  echo "All containers are healthy."
-  # nginx.config를 컨테이너에 맞게 변경하고 reload 함
+  echo "All containers are healthy. Proceeding with traffic switch."
+
+  # 1. Nginx 설정을 새 버전으로 교체
   docker exec proxy-server cp /etc/nginx/nginx.${AFTER_COMPOSE_COLOR}.conf /etc/nginx/nginx.conf
   docker exec proxy-server nginx -s reload
+  echo "Nginx now routing to ${AFTER_COMPOSE_COLOR}"
 
-  # 이전 컨테이너 종료
+  # 2. 이전 버전 종료
   docker-compose -p ${DOCKER_APP_NAME}-${BEFORE_COMPOSE_COLOR} -f docker-compose.${BEFORE_COMPOSE_COLOR}.yaml down
-  echo "$BEFORE_COMPOSE_COLOR down"
+  echo "${BEFORE_COMPOSE_COLOR} environment down"
+
 else
-  echo "Not all containers are healthy yet. $HEALTHY_COUNT/$CONTAINER_COUNT"
-  # 롤백 로직: 실패할 경우 새로운 환경을 내리고 삭제
+  echo "❌ Not all containers are healthy yet. $HEALTHY_COUNT/$CONTAINER_COUNT"
+
+  # 1. 새 버전 종료
   docker-compose -p ${DOCKER_APP_NAME}-${AFTER_COMPOSE_COLOR} -f docker-compose.${AFTER_COMPOSE_COLOR}.yaml down
-  echo "${AFTER_COMPOSE_COLOR} deployment failed. Rolled back."
+  echo "🔙 ${AFTER_COMPOSE_COLOR} deployment failed. Rolled back."
+
+  # Nginx 설정은 그대로 두되, 이전 버전이 계속 살아있으므로 정상 서비스 유지
 fi
